@@ -8,7 +8,7 @@ class ConfigManager {
         // Configurações padrão (fallback)
         const defaultConfig = {
             adminEmail: 'admin@mestres-cafe.com',
-            adminPassword: 'mestres2024',
+            adminPassword: 'MestresCAFE2024@Seguro',
             sessionTimeout: 3600000, // 1 hora
             jwtSecret: 'mestres_cafe_jwt_secret_2024',
             gaId: 'GA_MEASUREMENT_ID'
