@@ -1,0 +1,26 @@
+services:
+  - type: web
+    name: mestres-cafe-site
+    buildCommand: echo "Build complete"
+    staticPublishPath: .
+    envVars:
+      - key: ADMIN_EMAIL
+        sync: false
+      - key: ADMIN_PASSWORD
+        sync: false
+      - key: JWT_SECRET
+        sync: false
+      - key: SESSION_TIMEOUT
+        value: "3600000"
+      - key: GA_MEASUREMENT_ID
+        sync: false
+    headers:
+      - path: /*
+        name: X-Frame-Options
+        value: DENY
+      - path: /*
+        name: X-Content-Type-Options
+        value: nosniff
+      - path: /*
+        name: Referrer-Policy
+        value: strict-origin-when-cross-origin 

@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analytics - Mestres do Café</title>
+    <meta name="robots" content="noindex, nofollow">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="assets/images/logo-mestres-cafe.png">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/analytics.css">
+    
+    <!-- Google Analytics 4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'GA_MEASUREMENT_ID');
+    </script>
+</head>
+<body>
+    <!-- Login Modal -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <div class="login-header">
+                <img src="assets/images/logo-mestres-cafe.png" alt="Mestres do Café" class="login-logo">
+                <h2>Acesso Restrito</h2>
+                <p>Digite a senha para acessar o painel de analytics</p>
+            </div>
+            <form id="loginForm" class="login-form">
+                <div class="input-group">
+                    <i class="fas fa-envelope"></i>
+                    <input type="email" id="emailInput" placeholder="Email" required>
+                </div>
+                <div class="input-group">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" id="passwordInput" placeholder="Senha" required>
+                </div>
+                <button type="submit" class="btn btn--primary">
+                    <i class="fas fa-sign-in-alt"></i>
+                    Entrar
+                </button>
+                <div id="errorMessage" class="error-message"></div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Main Dashboard -->
+    <div id="dashboard" class="dashboard" style="display: none;">
+        <!-- Header -->
+        <header class="dashboard-header">
+            <div class="header-content">
+                <div class="header-left">
+                    <img src="assets/images/logo-mestres-cafe.png" alt="Mestres do Café" class="dashboard-logo">
+                    <div>
+                        <h1>Analytics Dashboard</h1>
+                        <p>Mestres do Café - Estatísticas em tempo real</p>
+                    </div>
+                </div>
+                <div class="header-right">
+                    <button id="refreshBtn" class="btn btn--outline">
+                        <i class="fas fa-sync-alt"></i>
+                        Atualizar
+                    </button>
+                    <button id="logoutBtn" class="btn btn--secondary">
+                        <i class="fas fa-sign-out-alt"></i>
+                        Sair
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="dashboard-main">
+            <!-- Stats Cards -->
+            <section class="stats-section">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon whatsapp">
+                            <i class="fab fa-whatsapp"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3>Cliques WhatsApp</h3>
+                            <p class="stat-number" id="whatsappClicks">-</p>
+                            <span class="stat-change positive">+12% esta semana</span>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon google">
+                            <i class="fab fa-google"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3>Avaliações Google</h3>
+                            <p class="stat-number" id="googleClicks">-</p>
+                            <span class="stat-change positive">+8% esta semana</span>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon visitors">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3>Visitantes Únicos</h3>
+                            <p class="stat-number" id="uniqueVisitors">-</p>
+                            <span class="stat-change positive">+15% esta semana</span>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon time">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3>Tempo Médio</h3>
+                            <p class="stat-number" id="avgTime">-</p>
+                            <span class="stat-change neutral">Estável</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Charts Section -->
+            <section class="charts-section">
+                <div class="charts-grid">
+                    <!-- Traffic Chart -->
+                    <div class="chart-card">
+                        <div class="chart-header">
+                            <h3>Tráfego dos Últimos 7 Dias</h3>
+                            <div class="chart-controls">
+                                <button class="chart-btn active" data-period="7d">7D</button>
+                                <button class="chart-btn" data-period="30d">30D</button>
+                            </div>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="trafficChart"></canvas>
+                        </div>
+                    </div>
+                    
+                    <!-- Device Chart -->
+                    <div class="chart-card">
+                        <div class="chart-header">
+                            <h3>Dispositivos</h3>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="deviceChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Recent Activity -->
+            <section class="activity-section">
+                <div class="activity-card">
+                    <div class="activity-header">
+                        <h3>Atividade Recente</h3>
+                        <span class="activity-time">Últimas 24 horas</span>
+                    </div>
+                    <div class="activity-list" id="activityList">
+                        <!-- Activity items will be populated by JavaScript -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- Quick Actions -->
+            <section class="actions-section">
+                <div class="actions-card">
+                    <h3>Ações Rápidas</h3>
+                    <div class="actions-grid">
+                        <a href="/" class="action-btn">
+                            <i class="fas fa-home"></i>
+                            <span>Ver Site</span>
+                        </a>
+                        <a href="/links" class="action-btn">
+                            <i class="fas fa-link"></i>
+                            <span>Página Links</span>
+                        </a>
+                        <button class="action-btn" onclick="exportData()">
+                            <i class="fas fa-download"></i>
+                            <span>Exportar Dados</span>
+                        </button>
+                        <button class="action-btn" onclick="clearCache()">
+                            <i class="fas fa-trash"></i>
+                            <span>Limpar Cache</span>
+                        </button>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Environment & Config -->
+    <script src="js/env-loader.js"></script>
+    <script src="js/config.js"></script>
+    
+    <!-- Custom JavaScript -->
+    <script src="js/analytics.js"></script>
+</body>
+</html>
+

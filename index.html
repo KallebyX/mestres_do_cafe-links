@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mestres do Café - Desde 2019</title>
+    <meta name="description" content="Mestres do Café - A melhor experiência em café premium desde 2019. Qualidade, tradição e sabor em cada xícara.">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="assets/images/logo-mestres-cafe.png">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- AOS Animation Library -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/apple-style.css">
+    
+    <!-- Google Analytics 4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'GA_MEASUREMENT_ID');
+    </script>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <nav class="nav container">
+            <div class="nav__logo">
+                <img src="assets/images/logo-mestres-cafe.png" alt="Mestres do Café" class="logo logo--light">
+                <img src="assets/images/logo-dark.png" alt="Mestres do Café" class="logo logo--dark">
+            </div>
+            <div class="nav__menu">
+                <a href="#home" class="nav__link">Início</a>
+                <a href="#about" class="nav__link">Sobre</a>
+                <a href="#contact" class="nav__link">Contato</a>
+                <a href="/links" class="nav__link nav__link--special">Links</a>
+            </div>
+            <div class="nav__actions">
+                <button id="theme-toggle" class="theme-toggle" title="Alternar tema">
+                    <div class="theme-toggle__icon">
+                        <i class="fas fa-moon"></i>
+                    </div>
+                </button>
+                <div class="nav__toggle" id="nav-toggle">
+                    <i class="fas fa-bars"></i>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Hero Section -->
+        <section id="home" class="hero">
+            <div class="hero__background">
+                <div class="hero__gradient"></div>
+                <div class="hero__particles"></div>
+            </div>
+            <div class="hero__container container">
+                <div class="hero__content" data-aos="fade-up" data-aos-duration="1200">
+                    <h1 class="hero__title">
+                        <span class="hero__title-line" data-aos="fade-up" data-aos-delay="200">Mestres do</span>
+                        <span class="hero__title-accent" data-aos="fade-up" data-aos-delay="400">Café</span>
+                    </h1>
+                    <p class="hero__subtitle" data-aos="fade-up" data-aos-delay="600">
+                        Desde 2019 embalamos doses de felicidade
+                    </p>
+                    <div class="hero__stats" data-aos="fade-up" data-aos-delay="800">
+                        <div class="stat-item" data-aos="zoom-in" data-aos-delay="900">
+                            <span class="stat-number">+10.000</span>
+                            <span class="stat-label">Clientes Satisfeitos</span>
+                        </div>
+                        <div class="stat-item" data-aos="zoom-in" data-aos-delay="1000">
+                            <span class="stat-number">+20</span>
+                            <span class="stat-label">Variedades de Cafés Especiais</span>
+                        </div>
+                        <div class="stat-item" data-aos="zoom-in" data-aos-delay="1100">
+                            <span class="stat-number">6</span>
+                            <span class="stat-label">Anos de Experiência</span>
+                        </div>
+                        <div class="stat-item" data-aos="zoom-in" data-aos-delay="1200">
+                            <span class="stat-number">+20</span>
+                            <span class="stat-label">Produtores</span>
+                        </div>
+                    </div>
+                    <p class="hero__description" data-aos="fade-up" data-aos-delay="1200">
+                        <strong class="hero__highlight">Frete grátis acima de R$ 200 em Santa Maria!</strong><br>
+                        Somos especialistas em proporcionar a melhor experiência em café premium. 
+                        Nossa paixão pela qualidade e tradição se reflete em cada grão cuidadosamente 
+                        selecionado e em cada xícara servida com excelência.
+                    </p>
+                    <div class="hero__buttons" data-aos="fade-up" data-aos-delay="1400">
+                        <a href="https://wa.me/5555996458600?text=Olá! Gostaria de conhecer mais sobre os cafés da Mestres do Café" 
+                           class="btn btn--primary btn--apple" 
+                           onclick="gtag('event', 'click', {'event_category': 'WhatsApp', 'event_label': 'Fabricio'})">
+                            <span class="btn__icon">
+                                <i class="fab fa-whatsapp"></i>
+                            </span>
+                            <span class="btn__text">Fale conosco via WhatsApp</span>
+                            <div class="btn__ripple"></div>
+                        </a>
+                        <a href="https://g.co/kgs/kpGDXwR" 
+                           target="_blank" 
+                           class="btn btn--secondary btn--apple"
+                           onclick="gtag('event', 'click', {'event_category': 'Google', 'event_label': 'Avaliacao'})">
+                            <span class="btn__icon">
+                                <i class="fab fa-google"></i>
+                            </span>
+                            <span class="btn__text">Ver nossa avaliação no Google</span>
+                            <div class="btn__ripple"></div>
+                        </a>
+                    </div>
+                </div>
+                <div class="hero__image" data-aos="fade-left" data-aos-delay="600">
+                    <div class="hero__image-container">
+                        <img src="assets/images/caneca-mestres-cafe.jpg" alt="Caneca Mestres do Café" class="hero__img">
+                        <div class="hero__image-glow"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="about">
+            <div class="about__container container">
+                <div class="about__content" data-aos="fade-up">
+                    <h2 class="section__title">Sobre a Mestres do Café</h2>
+                    <p class="about__text">
+                        Desde 2019, a Mestres do Café tem se dedicado a oferecer uma experiência única 
+                        no mundo dos cafés especiais. Nossa missão é conectar pessoas através do sabor 
+                        autêntico e da qualidade excepcional que só um café verdadeiramente especial pode proporcionar.
+                    </p>
+                    <p class="about__text">
+                        Trabalhamos com grãos cuidadosamente selecionados, processos artesanais e um 
+                        atendimento personalizado que faz toda a diferença. Cada xícara conta uma história 
+                        de paixão, dedicação e respeito pela tradição cafeeira.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="contact">
+            <div class="contact__container container">
+                <div class="contact__content" data-aos="fade-up">
+                    <h2 class="section__title">Entre em Contato</h2>
+                    <p class="contact__text">
+                        Estamos sempre prontos para atendê-lo e compartilhar nossa paixão pelo café. 
+                        Entre em contato conosco e descubra como podemos tornar sua experiência ainda mais especial.
+                    </p>
+                    <div class="contact__buttons">
+                        <a href="https://wa.me/5598118-8002?text=Olá! Gostaria de mais informações sobre a Mestres do Café" 
+                           class="btn btn--primary"
+                           onclick="gtag('event', 'click', {'event_category': 'WhatsApp', 'event_label': 'Fabricio_Contact'})">
+                            <i class="fab fa-whatsapp"></i>
+                            WhatsApp - Fabricio
+                        </a>
+                        <a href="/links" class="btn btn--outline">
+                            <i class="fas fa-link"></i>
+                            Todos os nossos links
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer__container container">
+            <div class="footer__content">
+                <div class="footer__logo">
+                    <img src="assets/images/logo-mestres-cafe.png" alt="Mestres do Café" class="footer__logo-img">
+                    <p class="footer__description">
+                        Mestres do Café - Qualidade e tradição desde 2019
+                    </p>
+                </div>
+                <div class="footer__links">
+                    <h3 class="footer__title">Links Rápidos</h3>
+                    <ul class="footer__list">
+                        <li><a href="#home" class="footer__link">Início</a></li>
+                        <li><a href="#about" class="footer__link">Sobre</a></li>
+                        <li><a href="#contact" class="footer__link">Contato</a></li>
+                        <li><a href="/links" class="footer__link">Links</a></li>
+                    </ul>
+                </div>
+                <div class="footer__contact">
+                    <h3 class="footer__title">Contato</h3>
+                    <p class="footer__contact-item">
+                        <i class="fab fa-whatsapp"></i>
+                        WhatsApp: (98) 1188-8002
+                    </p>
+                    <a href="https://g.co/kgs/kpGDXwR" target="_blank" class="footer__contact-item">
+                        <i class="fab fa-google"></i>
+                        Avaliações no Google
+                    </a>
+                </div>
+            </div>
+            <div class="footer__bottom">
+                <p class="footer__copyright">
+                    © 2024 Mestres do Café. Todos os direitos reservados.<br>
+                    CNPJ: 55.653.149/0001-61
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- AOS Animation Library -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    
+    <!-- Custom JavaScript -->
+    <script src="js/main.js"></script>
+    <script src="js/apple-effects.js"></script>
+</body>
+</html>
+
