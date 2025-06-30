@@ -61,12 +61,5 @@
         }
       ]
     }
-  ],
-  "env": {
-    "ADMIN_EMAIL": "@admin_email",
-    "ADMIN_PASSWORD": "@admin_password", 
-    "JWT_SECRET": "@jwt_secret",
-    "SESSION_TIMEOUT": "@session_timeout",
-    "GA_MEASUREMENT_ID": "@ga_measurement_id"
-  }
+  ]
 } 
