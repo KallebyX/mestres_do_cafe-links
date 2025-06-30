@@ -14,7 +14,18 @@ class ConfigManager {
             gaId: 'GA_MEASUREMENT_ID'
         };
 
-        // Tenta carregar do ambiente (Render/Vercel/Netlify)
+        // Vercel - carrega do window.VERCEL_CONFIG (injetado pelo vercel-config.js)
+        if (typeof window !== 'undefined' && window.VERCEL_CONFIG) {
+            return {
+                adminEmail: window.VERCEL_CONFIG.adminEmail || defaultConfig.adminEmail,
+                adminPassword: window.VERCEL_CONFIG.adminPassword || defaultConfig.adminPassword,
+                sessionTimeout: parseInt(window.VERCEL_CONFIG.sessionTimeout) || defaultConfig.sessionTimeout,
+                jwtSecret: window.VERCEL_CONFIG.jwtSecret || defaultConfig.jwtSecret,
+                gaId: window.VERCEL_CONFIG.gaId || defaultConfig.gaId
+            };
+        }
+
+        // Tenta carregar do ambiente (Render/Netlify)
         if (typeof process !== 'undefined' && process.env) {
             return {
                 adminEmail: process.env.ADMIN_EMAIL || defaultConfig.adminEmail,

@@ -1,0 +1,27 @@
+{
+  "name": "mestres-cafe-site",
+  "version": "3.0.0",
+  "description": "Site institucional da Mestres do Café com sistema de autenticação seguro",
+  "main": "index.html",
+  "scripts": {
+    "build": "node build-vercel.js",
+    "dev": "echo 'Development server not needed for static site'",
+    "start": "echo 'Static site - no start command needed'"
+  },
+  "keywords": [
+    "mestres-cafe",
+    "coffee",
+    "static-site",
+    "vercel"
+  ],
+  "author": "Sistema Manus",
+  "license": "MIT",
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/KallebyX/mestres_do_cafe-links.git"
+  },
+  "homepage": "https://github.com/KallebyX/mestres_do_cafe-links#readme"
+} 

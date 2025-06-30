@@ -1,0 +1,72 @@
+{
+  "framework": null,
+  "buildCommand": "node build-vercel.js",
+  "outputDirectory": "./",
+  "installCommand": "echo 'No dependencies to install'",
+  "rewrites": [
+    {
+      "source": "/links",
+      "destination": "/links.html"
+    },
+    {
+      "source": "/admin",
+      "destination": "/admin-analytics.html"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Frame-Options",
+          "value": "DENY"
+        },
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "X-XSS-Protection",
+          "value": "1; mode=block"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        },
+        {
+          "key": "Permissions-Policy",
+          "value": "geolocation=(), microphone=(), camera=()"
+        }
+      ]
+    },
+    {
+      "source": "/admin-analytics.html",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "no-cache, no-store, must-revalidate"
+        }
+      ]
+    },
+    {
+      "source": "/js/config.js",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-cache, no-store, must-revalidate"
+        }
+      ]
+    }
+  ],
+  "env": {
+    "ADMIN_EMAIL": "@admin_email",
+    "ADMIN_PASSWORD": "@admin_password", 
+    "JWT_SECRET": "@jwt_secret",
+    "SESSION_TIMEOUT": "@session_timeout",
+    "GA_MEASUREMENT_ID": "@ga_measurement_id"
+  }
+} 
