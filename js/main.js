@@ -140,7 +140,7 @@ class AnalyticsTracker {
         // WhatsApp buttons
         document.querySelectorAll('a[href*="wa.me"]').forEach(button => {
             button.addEventListener('click', (e) => {
-                const contact = button.href.includes('99645-8600') ? 'Daniel' : 'Fabricio';
+                const contact = button.href.includes('5555996458600') ? 'Daniel' : 'Fabricio';
                 this.trackEvent('click', 'WhatsApp', contact);
             });
         });
