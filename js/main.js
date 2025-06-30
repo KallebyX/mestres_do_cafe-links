@@ -142,6 +142,9 @@ class AnalyticsTracker {
             button.addEventListener('click', (e) => {
                 const contact = button.href.includes('5555996458600') ? 'Daniel' : 'Fabricio';
                 this.trackEvent('click', 'WhatsApp', contact);
+                
+                // Record in real analytics
+                this.recordRealAnalytic('whatsapp_clicks', `Clique no WhatsApp ${contact}`);
             });
         });
 
@@ -149,6 +152,9 @@ class AnalyticsTracker {
         document.querySelectorAll('a[href*="g.co/kgs"]').forEach(button => {
             button.addEventListener('click', () => {
                 this.trackEvent('click', 'Google', 'Avaliacao');
+                
+                // Record in real analytics
+                this.recordRealAnalytic('google_clicks', 'Clique nas avaliações Google');
             });
         });
 
@@ -156,17 +162,165 @@ class AnalyticsTracker {
         document.querySelectorAll('a[href*="/links"]').forEach(button => {
             button.addEventListener('click', () => {
                 this.trackEvent('click', 'Navigation', 'Links_Page');
+                
+                // Record activity
+                this.recordRealActivity('Página Links acessada', 'Usuário navegou para página Linktree', 'fas fa-link', '#6c5ce7');
             });
         });
     }
 
+    recordRealAnalytic(type, description) {
+        try {
+            // Increment counter in localStorage
+            const currentCount = localStorage.getItem(`mestres_analytics_${type}`) || '0';
+            const newCount = parseInt(currentCount) + 1;
+            localStorage.setItem(`mestres_analytics_${type}`, newCount.toString());
+            
+            // Record activity
+            let icon = 'fas fa-mouse-pointer';
+            let color = '#b58150';
+            
+            if (type.includes('whatsapp')) {
+                icon = 'fab fa-whatsapp';
+                color = '#25D366';
+            } else if (type.includes('google')) {
+                icon = 'fab fa-google';
+                color = '#4285F4';
+            }
+            
+            this.recordRealActivity('Novo clique registrado', description, icon, color);
+        } catch (error) {
+            console.warn('Could not record analytic:', error);
+        }
+    }
+
+    recordRealActivity(title, description, icon = 'fas fa-circle', color = '#b58150') {
+        try {
+            const activities = JSON.parse(localStorage.getItem('mestres_activity_history') || '[]');
+            const now = new Date();
+            
+            const newActivity = {
+                icon: icon,
+                color: color,
+                title: title,
+                description: description,
+                time: this.getTimeAgo(now),
+                timestamp: now.toISOString()
+            };
+            
+            activities.unshift(newActivity);
+            
+            // Keep only last 50 activities
+            if (activities.length > 50) {
+                activities.splice(50);
+            }
+            
+            localStorage.setItem('mestres_activity_history', JSON.stringify(activities));
+        } catch (error) {
+            console.warn('Could not record activity:', error);
+        }
+    }
+
+    getTimeAgo(date) {
+        const now = new Date();
+        const diffMs = now - new Date(date);
+        const diffMins = Math.floor(diffMs / 60000);
+        
+        if (diffMins < 1) return 'Agora';
+        if (diffMins < 60) return `${diffMins} min atrás`;
+        const diffHours = Math.floor(diffMs / 3600000);
+        if (diffHours < 24) return `${diffHours}h atrás`;
+        const diffDays = Math.floor(diffMs / 86400000);
+        return `${diffDays}d atrás`;
+    }
+
     trackPageViews() {
-        // Track time on page
+        // Track time on page and record real analytics
         const startTime = Date.now();
+        
+        // Record page view
+        const currentVisitors = localStorage.getItem('mestres_analytics_unique_visitors') || '0';
+        const sessionVisitor = sessionStorage.getItem('counted_visitor');
+        
+        if (!sessionVisitor) {
+            const newCount = parseInt(currentVisitors) + 1;
+            localStorage.setItem('mestres_analytics_unique_visitors', newCount.toString());
+            sessionStorage.setItem('counted_visitor', 'true');
+            sessionStorage.setItem('session_start', startTime.toString());
+            
+            // Record activity
+            this.recordRealActivity(
+                'Novo visitante',
+                `Acesso via ${window.location.pathname}`,
+                'fas fa-users',
+                '#b58150'
+            );
+            
+            // Record daily visit
+            this.recordDailyVisit();
+            
+            // Record device visit
+            this.recordDeviceVisit();
+        }
+        
         window.addEventListener('beforeunload', () => {
             const timeSpent = Math.round((Date.now() - startTime) / 1000);
             this.trackEvent('timing_complete', 'Page', 'Time_Spent', timeSpent);
+            
+            // Update average time if this session was longer
+            const currentAvg = localStorage.getItem('mestres_analytics_average_time') || '0';
+            if (timeSpent > parseInt(currentAvg)) {
+                localStorage.setItem('mestres_analytics_average_time', timeSpent.toString());
+            }
         });
+    }
+
+    recordDailyVisit() {
+        try {
+            const today = new Date().toISOString().split('T')[0];
+            const trafficHistory = JSON.parse(localStorage.getItem('mestres_traffic_history') || '{}');
+            
+            // Increment today's count
+            trafficHistory[today] = (trafficHistory[today] || 0) + 1;
+            
+            localStorage.setItem('mestres_traffic_history', JSON.stringify(trafficHistory));
+        } catch (error) {
+            console.warn('Could not record daily visit:', error);
+        }
+    }
+
+    recordDeviceVisit() {
+        try {
+            const device = this.detectDevice();
+            const deviceStats = JSON.parse(localStorage.getItem('mestres_device_stats') || '{"mobile":0,"desktop":0,"tablet":0}');
+            
+            // Only record once per session
+            if (!sessionStorage.getItem('device_recorded')) {
+                deviceStats[device] = (deviceStats[device] || 0) + 1;
+                localStorage.setItem('mestres_device_stats', JSON.stringify(deviceStats));
+                sessionStorage.setItem('device_recorded', 'true');
+                
+                // Record activity
+                this.recordRealActivity(
+                    `Acesso via ${device}`,
+                    `Usuário acessou usando dispositivo ${device}`,
+                    device === 'mobile' ? 'fas fa-mobile-alt' : device === 'tablet' ? 'fas fa-tablet-alt' : 'fas fa-desktop',
+                    device === 'mobile' ? '#fd79a8' : device === 'tablet' ? '#74b9ff' : '#636e72'
+                );
+            }
+        } catch (error) {
+            console.warn('Could not record device visit:', error);
+        }
+    }
+
+    detectDevice() {
+        const userAgent = navigator.userAgent.toLowerCase();
+        const isMobile = /android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(userAgent);
+        const isTablet = /ipad|android(?!.*mobile)|tablet/i.test(userAgent);
+        
+        if (isTablet) return 'tablet';
+        if (isMobile) return 'mobile';
+        return 'desktop';
     }
 
     trackEvent(action, category, label, value = null) {
