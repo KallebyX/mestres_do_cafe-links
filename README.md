@@ -177,13 +177,21 @@ mestres-cafe-site/
 └── TESTE_REPORT.md         # Relatório de testes
 ```
 
+## 📚 **DOCUMENTAÇÃO COMPLETA**
+
+👉 **[CLIQUE AQUI - INSTRUÇÕES EXATAS PARA VERCEL](docs/deploy/VERCEL_INSTRUCOES_EXATAS.md)**
+
+### **📁 Documentação Organizada**
+- **🔐 Segurança**: [`docs/security/`](docs/security/) - Auditoria completa (Score: 92/100)
+- **🚀 Deploy**: [`docs/deploy/`](docs/deploy/) - Guias e instruções detalhadas
+- **📊 Análises**: [`docs/analysis/`](docs/analysis/) - Relatórios técnicos completos
+
 ## 🎯 Próximos Passos
 
-1. **Google Analytics**: Substituir `GA_MEASUREMENT_ID` pelo ID real
-2. **SEO**: Adicionar meta tags específicas
-3. **Performance**: Otimizar imagens para WebP
-4. **Segurança**: Implementar HTTPS headers
-5. **Monitoramento**: Configurar alertas de uptime
+1. **Deploy Imediato**: Seguir instruções em [`docs/deploy/VERCEL_INSTRUCOES_EXATAS.md`](docs/deploy/VERCEL_INSTRUCOES_EXATAS.md)
+2. **Google Analytics**: Substituir `GA_MEASUREMENT_ID` pelo ID real
+3. **Domínio Custom**: Configurar domínio personalizado
+4. **Monitoramento**: Acompanhar métricas reais
 
 ## 🔧 **Configurações Técnicas**
 
