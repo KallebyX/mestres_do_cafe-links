@@ -3,11 +3,6 @@
   "buildCommand": "node build-vercel.js",
   "outputDirectory": "./",
   "installCommand": "echo 'No dependencies to install'",
-  "functions": {
-    "api/*.js": {
-      "runtime": "nodejs18.x"
-    }
-  },
   "redirects": [
     {
       "source": "/home",
