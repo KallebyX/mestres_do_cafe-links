@@ -1,0 +1,28 @@
+🔧 INSTRUÇÕES PARA RESOLVER ERR_SSL_VERSION_OR_CIPHER_MISMATCH
+
+1. CHROME - Configurações Avançadas:
+   - Digite: chrome://flags/#allow-insecure-localhost
+   - Ative: "Allow invalid certificates for resources loaded from localhost"
+   - Digite: chrome://settings/security
+   - Clique em "Configurações avançadas" > "Gerenciar certificados"
+   - Reinicie o Chrome
+
+2. SAFARI - Configurações de Segurança:
+   - Safari > Preferências > Privacidade
+   - Desmarque "Prevenir rastreamento entre sites"
+   - Safari > Preferências > Segurança
+   - Desmarque "Avisar ao visitar site fraudulento"
+   - Reinicie o Safari
+
+3. SISTEMA macOS - Certificados:
+   sudo security add-trusted-cert -d -r trustRoot -k /Library/Keychains/System.keychain <certificado>
+
+4. DNS ALTERNATIVO:
+   - Configurações do Sistema > Rede > Wi-Fi > Detalhes > DNS
+   - Adicionar: 8.8.8.8, 8.8.4.4, 1.1.1.1, 1.0.0.1
+
+5. TESTE FINAL:
+   curl -v https://www.mestresdocafe.com.br 2>&1 | grep -E "(SSL|TLS|cipher)"
+
+6. MODO EMERGÊNCIA - HTTP:
+   http://www.mestresdocafe.com.br (temporário)

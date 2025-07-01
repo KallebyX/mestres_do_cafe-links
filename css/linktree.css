@@ -90,6 +90,7 @@
   align-items: center;
   padding: var(--spacing-md);
   background: rgba(247, 252, 255, 0.95);
+  -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
   border-radius: var(--border-radius-xl);
   box-shadow: var(--shadow-lg);
@@ -151,6 +152,14 @@
   background: linear-gradient(135deg, #4285F4, #34A853);
 }
 
+.linktree-link-icon.instagram {
+  background: linear-gradient(135deg, #E4405F, #FCAF45, #833AB4);
+}
+
+.linktree-link-icon.linkedin {
+  background: linear-gradient(135deg, #0077B5, #005885);
+}
+
 .linktree-link-icon.website {
   background: linear-gradient(135deg, var(--color-accent), #a0704a);
 }
@@ -190,6 +199,7 @@
 
 .clube-card {
   background: linear-gradient(135deg, rgba(181, 129, 80, 0.9), rgba(160, 112, 74, 0.9));
+  -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
   border-radius: var(--border-radius-xl);
   padding: var(--spacing-lg);
