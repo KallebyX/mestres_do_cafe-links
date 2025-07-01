@@ -265,5 +265,8 @@
   ],
   "trailingSlash": false,
   "cleanUrls": true,
-  "public": true
+  "public": true,
+  "github": {
+    "silent": false
+  }
 } 
