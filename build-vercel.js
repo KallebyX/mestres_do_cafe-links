@@ -4,59 +4,90 @@
 const fs = require('fs');
 const path = require('path');
 
-console.log('🚀 Starting Vercel build process...');
+console.log('🚀 Iniciando build para Vercel...');
 
-// Função para substituir variáveis de ambiente no código
-function injectEnvironmentVariables() {
-    const vercelConfigPath = path.join(__dirname, 'js', 'vercel-config.js');
-    
-    if (fs.existsSync(vercelConfigPath)) {
-        let content = fs.readFileSync(vercelConfigPath, 'utf8');
-        
-        // Substituir placeholders pelas variáveis de ambiente reais
-        content = content.replace(/\$\{ADMIN_EMAIL\}/g, process.env.ADMIN_EMAIL || 'admin@mestres-cafe.com');
-        content = content.replace(/\$\{ADMIN_PASSWORD\}/g, process.env.ADMIN_PASSWORD || 'mestres2024');
-        content = content.replace(/\$\{JWT_SECRET\}/g, process.env.JWT_SECRET || 'mestres_cafe_jwt_secret_2024');
-        content = content.replace(/\$\{SESSION_TIMEOUT\}/g, process.env.SESSION_TIMEOUT || '3600000');
-        content = content.replace(/\$\{GA_MEASUREMENT_ID\}/g, process.env.GA_MEASUREMENT_ID || 'GA_MEASUREMENT_ID');
-        
-        // Criar versão com variáveis injetadas
-        const buildConfigPath = path.join(__dirname, 'js', 'vercel-config-built.js');
-        fs.writeFileSync(buildConfigPath, content);
-        
-        console.log('✅ Environment variables injected successfully');
+// Função para copiar arquivo com log
+function copyFileWithLog(src, dest) {
+    try {
+        const content = fs.readFileSync(src, 'utf8');
+        fs.writeFileSync(dest, content);
+        const stats = fs.statSync(dest);
+        console.log(`✅ Copiado: ${src} -> ${dest} (${stats.size} bytes)`);
+        return true;
+    } catch (error) {
+        console.error(`❌ Erro ao copiar ${src}:`, error.message);
+        return false;
     }
 }
 
-// Função para atualizar referências nos HTMLs
-function updateHTMLReferences() {
-    const files = ['admin-analytics.html'];
-    
-    files.forEach(filename => {
-        const filePath = path.join(__dirname, filename);
-        if (fs.existsSync(filePath)) {
-            let content = fs.readFileSync(filePath, 'utf8');
+// Lista de arquivos para garantir que existam
+const filesToCheck = [
+    'index.html',
+    'links.html',
+    'admin-analytics.html'
+];
+
+console.log('📋 Verificando arquivos necessários...');
+
+filesToCheck.forEach(file => {
+    if (fs.existsSync(file)) {
+        const stats = fs.statSync(file);
+        const content = fs.readFileSync(file, 'utf8');
+        
+        // Verificação especial para links.html
+        if (file === 'links.html') {
+            const hasInstagram = content.includes('instagram');
+            const hasLinkedIn = content.includes('linkedin');
+            const hasCache = content.includes('Cache bust');
             
-            // Substituir referência para versão com build
-            content = content.replace(
-                'src="js/vercel-config.js"',
-                'src="js/vercel-config-built.js"'
-            );
+            console.log(`📱 ${file}: ${stats.size} bytes`);
+            console.log(`   - Instagram: ${hasInstagram ? '✅' : '❌'}`);
+            console.log(`   - LinkedIn: ${hasLinkedIn ? '✅' : '❌'}`);
+            console.log(`   - Cache bust: ${hasCache ? '✅' : '❌'}`);
             
-            fs.writeFileSync(filePath, content);
-            console.log(`✅ Updated ${filename}`);
+            if (!hasInstagram || !hasLinkedIn) {
+                console.error('❌ ERRO: links.html não contém Instagram ou LinkedIn!');
+                process.exit(1);
+            }
+        } else {
+            console.log(`✅ ${file}: ${stats.size} bytes`);
         }
-    });
+    } else {
+        console.error(`❌ Arquivo não encontrado: ${file}`);
+        process.exit(1);
+    }
+});
+
+// Verificar diretórios necessários
+const dirsToCheck = ['css', 'js', 'assets'];
+dirsToCheck.forEach(dir => {
+    if (fs.existsSync(dir)) {
+        console.log(`✅ Diretório: ${dir}/`);
+    } else {
+        console.error(`❌ Diretório não encontrado: ${dir}/`);
+    }
+});
+
+// Adicionar timestamp no links.html para forçar cache invalidation
+const linksPath = 'links.html';
+if (fs.existsSync(linksPath)) {
+    let content = fs.readFileSync(linksPath, 'utf8');
+    const timestamp = new Date().toISOString();
+    
+    // Atualizar o comentário de cache bust
+    content = content.replace(
+        /<!-- Cache bust: .* -->/,
+        `<!-- Cache bust: ${timestamp} - Instagram/LinkedIn badges -->`
+    );
+    
+    fs.writeFileSync(linksPath, content);
+    console.log(`🔄 Cache bust atualizado: ${timestamp}`);
 }
 
-// Executar processo de build
-try {
-    injectEnvironmentVariables();
-    updateHTMLReferences();
-    console.log('🎉 Vercel build completed successfully!');
-} catch (error) {
-    console.error('❌ Build failed:', error);
-    process.exit(1);
-}
+console.log('✅ Build concluído com sucesso!');
+console.log('📊 Resumo do build:');
+console.log(`   - Arquivos HTML: ${filesToCheck.length}`);
+console.log(`   - Diretórios: ${dirsToCheck.length}`);
+console.log(`   - Status: Pronto para deploy`);
 
-module.exports = { injectEnvironmentVariables, updateHTMLReferences }; 
+module.exports = { copyFileWithLog }; 
