@@ -246,7 +246,7 @@
       ]
     },
     {
-      "source": "/(.*\\.(png|jpg|jpeg|gif|ico|svg|webp|avif))",
+      "source": "/(.*)",
       "headers": [
         {
           "key": "Cache-Control",
@@ -259,6 +259,13 @@
         {
           "key": "Access-Control-Allow-Origin",
           "value": "*"
+        }
+      ],
+      "has": [
+        {
+          "type": "header",
+          "key": "content-type",
+          "value": "image/(png|jpg|jpeg|gif|ico|svg|webp|avif)"
         }
       ]
     }
