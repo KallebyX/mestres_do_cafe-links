@@ -77,6 +77,16 @@
             gap: 1rem;
         }
 
+        .nav-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: #ffffff;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0.5rem;
+        }
+
         .nav-link {
             display: flex;
             align-items: center;
@@ -93,6 +103,36 @@
         .nav-link.active {
             color: #ffffff;
             background: rgba(181, 129, 80, 0.2);
+        }
+
+        /* Mobile Menu */
+        @media (max-width: 968px) {
+            .nav-toggle {
+                display: block;
+            }
+
+            .nav-menu {
+                position: fixed;
+                top: 70px;
+                left: -100%;
+                width: 100%;
+                background: rgba(16, 24, 32, 0.98);
+                flex-direction: column;
+                padding: 2rem;
+                gap: 0.5rem;
+                transition: left 0.3s ease;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            }
+
+            .nav-menu.active {
+                left: 0;
+            }
+
+            .nav-link {
+                width: 100%;
+                padding: 1rem;
+                font-size: 1rem;
+            }
         }
 
         /* Main Content */
@@ -311,7 +351,10 @@
                 <img src="assets/images/logo-mestres-cafe.png" alt="Mestres do Café" class="nav-logo" style="background: white; padding: 5px; border-radius: 50%;">
                 <span class="nav-title">Mestres do Café</span>
             </div>
-            <div class="nav-menu">
+            <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="nav-menu" id="navMenu">
                 <a href="index.html" class="nav-link">
                     <i class="fas fa-home"></i>
                     Início
@@ -676,6 +719,44 @@
             }
         `;
         document.head.appendChild(style);
+
+        // Menu Hamburguer Toggle
+        const navToggle = document.getElementById('navToggle');
+        const navMenu = document.getElementById('navMenu');
+
+        navToggle.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+            const icon = navToggle.querySelector('i');
+            
+            // Trocar ícone entre hamburger e X
+            if (navMenu.classList.contains('active')) {
+                icon.classList.remove('fa-bars');
+                icon.classList.add('fa-times');
+            } else {
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+            }
+        });
+
+        // Fechar menu ao clicar em um link
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', () => {
+                navMenu.classList.remove('active');
+                const icon = navToggle.querySelector('i');
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+            });
+        });
+
+        // Fechar menu ao clicar fora
+        document.addEventListener('click', (e) => {
+            if (!navToggle.contains(e.target) && !navMenu.contains(e.target)) {
+                navMenu.classList.remove('active');
+                const icon = navToggle.querySelector('i');
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+            }
+        });
 
         console.log('🗺️ Mapa carregado com sucesso!');
         console.log(`📍 ${clientesData.length} localizações adicionadas`);
