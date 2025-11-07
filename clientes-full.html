@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestão de Clientes - Mestres do Café</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="assets/images/logo-mestres-cafe.png">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/apple-style.css">
+    <link rel="stylesheet" href="css/clientes.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <img src="assets/images/logo-mestres-cafe.png" alt="Mestres do Café" class="nav-logo">
+                <span class="nav-title">Mestres do Café</span>
+            </div>
+            <div class="nav-menu">
+                <a href="index.html" class="nav-link">
+                    <i class="fas fa-home"></i>
+                    Início
+                </a>
+                <a href="admin-analytics.html" class="nav-link">
+                    <i class="fas fa-chart-bar"></i>
+                    Analytics
+                </a>
+                <a href="links.html" class="nav-link">
+                    <i class="fas fa-link"></i>
+                    Links
+                </a>
+                <a href="clientes.html" class="nav-link active">
+                    <i class="fas fa-users"></i>
+                    Clientes
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <!-- Header -->
+            <div class="page-header">
+                <div class="header-content">
+                    <h1 class="page-title">
+                        <i class="fas fa-users"></i>
+                        Gestão de Clientes
+                    </h1>
+                    <p class="page-subtitle">Gerencie todos os clientes da Mestres do Café</p>
+                </div>
+                <div class="header-actions">
+                    <button class="btn btn-primary" onclick="adicionarCliente()">
+                        <i class="fas fa-plus"></i>
+                        Novo Cliente
+                    </button>
+                    <button class="btn btn-secondary" onclick="exportarDados()">
+                        <i class="fas fa-download"></i>
+                        Exportar
+                    </button>
+                </div>
+            </div>
+
+            <!-- Filters -->
+            <div class="filters-section">
+                <div class="filter-group">
+                    <input type="text" id="searchInput" placeholder="Buscar cliente..." class="search-input">
+                    <select id="statusFilter" class="filter-select">
+                        <option value="">Todos os status</option>
+                        <option value="Ativo">Ativo</option>
+                        <option value="Inativo">Inativo</option>
+                        <option value="Pendente">Pendente</option>
+                    </select>
+                    <button class="btn btn-outline" onclick="limparFiltros()">
+                        <i class="fas fa-times"></i>
+                        Limpar
+                    </button>
+                </div>
+            </div>
+
+            <!-- Statistics Cards -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3 id="totalClientes">27</h3>
+                        <p>Total de Clientes</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon active">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3 id="clientesAtivos">27</h3>
+                        <p>Clientes Ativos</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon recent">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3 id="contatosRecentes">8</h3>
+                        <p>Contatos Recentes</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon pending">
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3 id="pendencias">3</h3>
+                        <p>Pendências</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Clients Table -->
+            <div class="table-container">
+                <table class="clients-table" id="clientsTable">
+                    <thead>
+                        <tr>
+                            <th onclick="sortTable(0)">
+                                Nome Fantasia
+                                <i class="fas fa-sort"></i>
+                            </th>
+                            <th onclick="sortTable(1)">
+                                Nome do Cliente
+                                <i class="fas fa-sort"></i>
+                            </th>
+                            <th onclick="sortTable(2)">
+                                Telefone
+                                <i class="fas fa-sort"></i>
+                            </th>
+                            <th onclick="sortTable(3)">
+                                Endereço
+                                <i class="fas fa-sort"></i>
+                            </th>
+                            <th onclick="sortTable(4)">
+                                Status
+                                <i class="fas fa-sort"></i>
+                            </th>
+                            <th onclick="sortTable(5)">
+                                Último Contato
+                                <i class="fas fa-sort"></i>
+                            </th>
+                            <th>
+                                Observações
+                            </th>
+                            <th>
+                                Ações
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody id="clientsTableBody">
+                        <!-- Os dados serão inseridos via JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal para adicionar/editar cliente -->
+    <div id="clientModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle">Novo Cliente</h2>
+                <span class="close" onclick="fecharModal()">&times;</span>
+            </div>
+            <form id="clientForm" class="modal-body">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="nomeFantasia">Nome Fantasia *</label>
+                        <input type="text" id="nomeFantasia" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="nomeCliente">Nome do Cliente</label>
+                        <input type="text" id="nomeCliente">
+                    </div>
+                    <div class="form-group">
+                        <label for="telefone">Telefone</label>
+                        <input type="tel" id="telefone">
+                    </div>
+                    <div class="form-group">
+                        <label for="endereco">Endereço</label>
+                        <textarea id="endereco" rows="2"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="status">Status</label>
+                        <select id="status">
+                            <option value="Ativo">Ativo</option>
+                            <option value="Inativo">Inativo</option>
+                            <option value="Pendente">Pendente</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="ultimoContato">Último Contato</label>
+                        <input type="date" id="ultimoContato">
+                    </div>
+                    <div class="form-group full-width">
+                        <label for="observacoes">Observações</label>
+                        <textarea id="observacoes" rows="3"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="fecharModal()">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Salvar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/config.js"></script>
+    <script src="js/clientes.js"></script>
+</body>
+</html>

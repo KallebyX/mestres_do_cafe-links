@@ -267,6 +267,22 @@ style.textContent = `
 `;
 document.head.appendChild(style);
 
+// ===== ADMIN MENU CONTROL =====
+function toggleAdminMenu() {
+    const adminMenu = document.getElementById('adminMenu');
+    adminMenu.classList.toggle('show');
+}
+
+// Close admin menu when clicking outside
+document.addEventListener('click', function(event) {
+    const adminAccess = document.querySelector('.admin-access');
+    const adminMenu = document.getElementById('adminMenu');
+    
+    if (adminAccess && !adminAccess.contains(event.target)) {
+        adminMenu.classList.remove('show');
+    }
+});
+
 // ===== CONSOLE BRANDING =====
 console.log('%c🔗 Linktree Mestres do Café', 'color: #b58150; font-size: 16px; font-weight: bold;');
 console.log('%cTodos os links em um só lugar!', 'color: #101820; font-size: 12px;');

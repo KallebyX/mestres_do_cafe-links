@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teste - Gestão de Clientes</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #1a1a1a;
+            color: white;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        h1 {
+            color: #b58150;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .test-message {
+            background: #333;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            margin: 20px 0;
+        }
+        .back-link {
+            display: inline-block;
+            background: #b58150;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔧 Teste - Página de Clientes</h1>
+        
+        <div class="test-message">
+            <h2>✅ A página está carregando!</h2>
+            <p>Se você está vendo esta mensagem, o servidor HTTP está funcionando corretamente.</p>
+            <p>Agora vamos carregar a página completa de clientes...</p>
+        </div>
+        
+        <a href="index.html" class="back-link">← Voltar ao Site Principal</a>
+        <a href="admin-analytics.html" class="back-link">📊 Analytics</a>
+        <a href="links.html" class="back-link">🔗 Links</a>
+        
+        <script>
+            console.log('Página de teste carregada com sucesso!');
+            
+            // Redirecionar para a página completa após 3 segundos
+            setTimeout(() => {
+                if (confirm('Carregar a página completa de clientes?')) {
+                    window.location.href = 'clientes-full.html';
+                }
+            }, 2000);
+        </script>
+    </div>
+</body>
+</html>

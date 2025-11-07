@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Onde Nos Encontrar - Mestres do Café</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="assets/images/logo-mestres-cafe.png">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/apple-style.css">
+    
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #101820 0%, #2c3e50 50%, #101820 100%);
+            color: #ffffff;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+        }
+
+        /* Navigation */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(16, 24, 32, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .nav-logo {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+        }
+
+        .nav-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #ffffff;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            color: #cccccc;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            color: #ffffff;
+            background: rgba(181, 129, 80, 0.2);
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-top: 80px;
+            padding: 2rem;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .page-header h1 {
+            font-size: 2.5rem;
+            color: #b58150;
+            margin-bottom: 0.5rem;
+        }
+
+        .page-header p {
+            color: #cccccc;
+            font-size: 1.1rem;
+        }
+
+        /* Map Container */
+        .map-section {
+            display: grid;
+            grid-template-columns: 350px 1fr;
+            gap: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .clients-list {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 1.5rem;
+            max-height: calc(100vh - 200px);
+            overflow-y: auto;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .clients-list h2 {
+            color: #b58150;
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+
+        .search-box {
+            width: 100%;
+            padding: 0.8rem;
+            margin-bottom: 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            color: #ffffff;
+            font-size: 0.9rem;
+        }
+
+        .search-box:focus {
+            outline: none;
+            border-color: #b58150;
+        }
+
+        .client-item {
+            background: rgba(255, 255, 255, 0.08);
+            padding: 1rem;
+            margin-bottom: 0.8rem;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-left: 3px solid transparent;
+        }
+
+        .client-item:hover {
+            background: rgba(181, 129, 80, 0.2);
+            border-left-color: #b58150;
+            transform: translateX(5px);
+        }
+
+        .client-item.active {
+            background: rgba(181, 129, 80, 0.3);
+            border-left-color: #b58150;
+        }
+
+        .client-name {
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 0.3rem;
+        }
+
+        .client-address {
+            font-size: 0.85rem;
+            color: #cccccc;
+            display: flex;
+            align-items: start;
+            gap: 0.5rem;
+        }
+
+        .client-contact {
+            font-size: 0.8rem;
+            color: #b58150;
+            margin-top: 0.3rem;
+        }
+
+        #map {
+            height: calc(100vh - 200px);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Custom Leaflet Popup */
+        .custom-popup {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .custom-popup h3 {
+            color: #b58150;
+            margin: 0 0 0.5rem 0;
+            font-size: 1.1rem;
+        }
+
+        .custom-popup p {
+            margin: 0.3rem 0;
+            font-size: 0.9rem;
+        }
+
+        .custom-popup .contact-btn {
+            display: inline-block;
+            background: #25D366;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            text-decoration: none;
+            margin-top: 0.5rem;
+            font-size: 0.85rem;
+        }
+
+        .custom-popup .contact-btn:hover {
+            background: #128C7E;
+        }
+
+        /* Stats */
+        .stats-bar {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+        }
+
+        .stat-item {
+            flex: 1;
+            text-align: center;
+        }
+
+        .stat-number {
+            display: block;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #b58150;
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: #cccccc;
+        }
+
+        /* Responsive */
+        @media (max-width: 968px) {
+            .map-section {
+                grid-template-columns: 1fr;
+            }
+
+            .clients-list {
+                max-height: 300px;
+            }
+
+            #map {
+                height: 500px;
+            }
+
+            .nav-menu {
+                display: none;
+            }
+        }
+
+        /* Scrollbar */
+        .clients-list::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .clients-list::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+        }
+
+        .clients-list::-webkit-scrollbar-thumb {
+            background: rgba(181, 129, 80, 0.5);
+            border-radius: 10px;
+        }
+
+        .clients-list::-webkit-scrollbar-thumb:hover {
+            background: rgba(181, 129, 80, 0.7);
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <img src="assets/images/logo-mestres-cafe.png" alt="Mestres do Café" class="nav-logo" style="background: white; padding: 5px; border-radius: 50%;">
+                <span class="nav-title">Mestres do Café</span>
+            </div>
+            <div class="nav-menu">
+                <a href="index.html" class="nav-link">
+                    <i class="fas fa-home"></i>
+                    Início
+                </a>
+                <a href="onde-encontrar.html" class="nav-link active">
+                    <i class="fas fa-map-marker-alt"></i>
+                    Onde Nos Encontrar
+                </a>
+                <a href="links.html" class="nav-link">
+                    <i class="fas fa-link"></i>
+                    Links
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="page-header">
+            <h1>
+                <i class="fas fa-map-marker-alt"></i>
+                Onde Nos Encontrar
+            </h1>
+            <p>Encontre nossos cafés especiais em diversos pontos de Santa Maria - RS</p>
+        </div>
+
+        <div class="map-section">
+            <!-- Clients List -->
+            <div class="clients-list">
+                <h2><i class="fas fa-store"></i> Nossos Parceiros</h2>
+                
+                <div class="stats-bar">
+                    <div class="stat-item">
+                        <span class="stat-number" id="totalLocations">27</span>
+                        <span class="stat-label">Localizações</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">100%</span>
+                        <span class="stat-label">Santa Maria</span>
+                    </div>
+                </div>
+
+                <input type="text" id="searchClients" class="search-box" placeholder="🔍 Buscar estabelecimento...">
+                
+                <div id="clientsList"></div>
+            </div>
+
+            <!-- Map -->
+            <div id="map"></div>
+        </div>
+    </main>
+
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    
+    <!-- Map Script -->
+    <script>
+        // Dados dos clientes com coordenadas aproximadas de Santa Maria - RS
+        const clientesData = [
+            {
+                nome: "Boutique Best Beef",
+                contato: "Ticiane",
+                telefone: "55 9 9964-9192",
+                endereco: "R. Floriano Peixoto, 2004 - Centro, Santa Maria - RS",
+                lat: -29.6842, lng: -53.8069
+            },
+            {
+                nome: "Calabouço Academia",
+                contato: "Paula Arruda",
+                telefone: "55 9 9914-4142",
+                endereco: "R. Tuiuti, 920 - Nossa Sra. de Fátima, Santa Maria - RS",
+                lat: -29.6858, lng: -53.8125
+            },
+            {
+                nome: "Coopercedro",
+                contato: "",
+                telefone: "55 9 9202-6718",
+                endereco: "Praça Saturnino de Brito, Rua Dr. Bozano - Santa Maria - RS",
+                lat: -29.6848, lng: -53.8078
+            },
+            {
+                nome: "Di Torriani",
+                contato: "Cibele",
+                telefone: "55 9 9185-5790",
+                endereco: "Av. Pref. Evandro Behr, 4281 - Camobi, Santa Maria - RS",
+                lat: -29.7145, lng: -53.7356
+            },
+            {
+                nome: "Divina Fruteira",
+                contato: "Allan",
+                telefone: "55 9 9218-5845",
+                endereco: "Av. Osvaldo Cruz, 206 - Nossa Sra. das Dores, Santa Maria - RS",
+                lat: -29.6725, lng: -53.8195
+            },
+            {
+                nome: "Doce Amaro",
+                contato: "Vandir",
+                telefone: "55 9 9140-4809",
+                endereco: "R. Venâncio Aires, 1366 - Loja 2B - Centro, Santa Maria - RS",
+                lat: -29.6852, lng: -53.8089
+            },
+            {
+                nome: "Empório Belga",
+                contato: "Cris / Daniel",
+                telefone: "55 9 9997-3507",
+                endereco: "Rua André Marques, 119 - Centro, Santa Maria - RS",
+                lat: -29.6835, lng: -53.8075
+            },
+            {
+                nome: "Fruteira do Chico",
+                contato: "Emerson",
+                telefone: "55 9162-1422",
+                endereco: "Av. Pref. Evandro Behr, 4907 - Camobi, Santa Maria - RS",
+                lat: -29.7189, lng: -53.7298
+            },
+            {
+                nome: "Frutila",
+                contato: "",
+                telefone: "",
+                endereco: "Av. Fernando Ferrari, 1090 - Nossa Sra. de Lourdes, Santa Maria - RS",
+                lat: -29.6895, lng: -53.8245
+            },
+            {
+                nome: "Gran Reserva",
+                contato: "Guilherme",
+                telefone: "55 9 992-0108",
+                endereco: "R. João Batista da Cruz Jobim, 304 - Nossa Sra. Medianeira, Santa Maria - RS",
+                lat: -29.6745, lng: -53.8156
+            },
+            {
+                nome: "Hamani",
+                contato: "Aline / Marcia",
+                telefone: "55 9 9685-9055",
+                endereco: "R. Venâncio Aires, 1395 - Centro, Santa Maria - RS",
+                lat: -29.6855, lng: -53.8092
+            },
+            {
+                nome: "Imperial Fresh Food",
+                contato: "Carol",
+                telefone: "55 9 9221-8888",
+                endereco: "R. Venâncio Aires, 2050 - Centro, Santa Maria - RS",
+                lat: -29.6878, lng: -53.8115
+            },
+            {
+                nome: "La Pimenta",
+                contato: "Roberto",
+                telefone: "55 9 9717-8160",
+                endereco: "Av. Pref. Evandro Behr, 6449 - Camobi, Santa Maria - RS",
+                lat: -29.7289, lng: -53.7189
+            },
+            {
+                nome: "La Santa (Shopping Royal Plazza)",
+                contato: "Allana / Alexandre",
+                telefone: "55 9 9194-1836",
+                endereco: "Av. Nossa Sra. das Dores, 305 - Loja 158 - Nossa Sra. das Dores, Santa Maria - RS",
+                lat: -29.6698, lng: -53.8225
+            },
+            {
+                nome: "La Santa Café e Bistro (Container)",
+                contato: "Allana / Alexandre",
+                telefone: "55 9 9194-1836",
+                endereco: "R. Serafim Valandro, 1750 - Centro, Santa Maria - RS",
+                lat: -29.6862, lng: -53.8125
+            },
+            {
+                nome: "Nibs",
+                contato: "Deise",
+                telefone: "55 9 8464-4340",
+                endereco: "R. Jorge Pedro Abelin, 284 - Nossa Sra. de Lourdes, Santa Maria - RS",
+                lat: -29.6885, lng: -53.8265
+            },
+            {
+                nome: "Padaria Pão Quentinho",
+                contato: "Laura",
+                telefone: "55 9 9681-1520",
+                endereco: "Av. Prefeito Evaldo Behr, 545 - Parque Residencial Novo Horizonte, Santa Maria - RS",
+                lat: -29.7098, lng: -53.7425
+            },
+            {
+                nome: "Padaria Phoenix",
+                contato: "Guilherme",
+                telefone: "55 9 9677-5665",
+                endereco: "Av. João Machado Soares, 2164 - Camobi, Santa Maria - RS",
+                lat: -29.7256, lng: -53.7245
+            },
+            {
+                nome: "Panhoca",
+                contato: "Adriana",
+                telefone: "",
+                endereco: "Av. Pres. Vargas, 448 - Patronato, Santa Maria - RS",
+                lat: -29.6925, lng: -53.8165
+            },
+            {
+                nome: "Pomar Fruteira",
+                contato: "Roger",
+                telefone: "",
+                endereco: "R. Pinto Bandeira - Nossa Sra. de Lourdes, Santa Maria - RS",
+                lat: -29.6895, lng: -53.8285
+            },
+            {
+                nome: "Quitanda Market",
+                contato: "",
+                telefone: "",
+                endereco: "Diversos estabelecimentos em Santa Maria - RS",
+                lat: -29.6868, lng: -53.8005
+            },
+            {
+                nome: "Reduto da Barba",
+                contato: "Bruno",
+                telefone: "55 9 9125-4454",
+                endereco: "Av. Nossa Sra. das Dores, 101 - Nossa Sra. das Dores, Santa Maria - RS",
+                lat: -29.6695, lng: -53.8205
+            },
+            {
+                nome: "Seu Pedro Bolicho",
+                contato: "",
+                telefone: "55 9 9981-9990",
+                endereco: "BR-287, 4743 - Camobi, Santa Maria - RS",
+                lat: -29.7356, lng: -53.7125
+            },
+            {
+                nome: "Thru Café",
+                contato: "Luis",
+                telefone: "55 9 9648-4083",
+                endereco: "Av. Nossa Senhora Medianeira, 2376 - Santa Maria - RS",
+                lat: -29.6758, lng: -53.8178
+            },
+            {
+                nome: "Verdito",
+                contato: "Deise",
+                telefone: "55 9 9930-7473",
+                endereco: "R. Pinheiro Machado, 2366 - Segundo Andar - Sala 206 e 207 - Centro, Santa Maria - RS",
+                lat: -29.6868, lng: -53.8098
+            },
+            {
+                nome: "Di Bento",
+                contato: "",
+                telefone: "",
+                endereco: "R. Benjamin Constant, 1242 - Centro, Santa Maria - RS",
+                lat: -29.6845, lng: -53.8085
+            }
+        ];
+
+        // Inicializar mapa centrado em Santa Maria - RS
+        const map = L.map('map').setView([-29.6868, -53.8005], 13);
+
+        // Adicionar tile layer (OpenStreetMap)
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors',
+            maxZoom: 19
+        }).addTo(map);
+
+        // Ícone personalizado para os marcadores
+        const customIcon = L.divIcon({
+            className: 'custom-marker',
+            html: '<div style="background: #b58150; width: 30px; height: 30px; border-radius: 50%; border: 3px solid white; box-shadow: 0 2px 8px rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center;"><i class="fas fa-coffee" style="color: white; font-size: 12px;"></i></div>',
+            iconSize: [30, 30],
+            iconAnchor: [15, 15]
+        });
+
+        let markers = [];
+        let activeMarker = null;
+
+        // Função para criar popup
+        function createPopup(cliente) {
+            const whatsappLink = cliente.telefone ? 
+                `<a href="https://wa.me/55${cliente.telefone.replace(/\D/g, '')}" target="_blank" class="contact-btn">
+                    <i class="fab fa-whatsapp"></i> Contatar
+                </a>` : '';
+            
+            return `
+                <div class="custom-popup">
+                    <h3>${cliente.nome}</h3>
+                    ${cliente.contato ? `<p><strong>Contato:</strong> ${cliente.contato}</p>` : ''}
+                    ${cliente.telefone ? `<p><strong>Telefone:</strong> ${cliente.telefone}</p>` : ''}
+                    <p><i class="fas fa-map-marker-alt"></i> ${cliente.endereco}</p>
+                    ${whatsappLink}
+                </div>
+            `;
+        }
+
+        // Adicionar marcadores ao mapa
+        clientesData.forEach((cliente, index) => {
+            const marker = L.marker([cliente.lat, cliente.lng], { icon: customIcon })
+                .addTo(map)
+                .bindPopup(createPopup(cliente));
+            
+            markers.push({ marker, cliente, index });
+        });
+
+        // Renderizar lista de clientes
+        function renderClientsList(filter = '') {
+            const clientsList = document.getElementById('clientsList');
+            const filteredClients = clientesData.filter(c => 
+                c.nome.toLowerCase().includes(filter.toLowerCase()) ||
+                c.endereco.toLowerCase().includes(filter.toLowerCase()) ||
+                (c.contato && c.contato.toLowerCase().includes(filter.toLowerCase()))
+            );
+
+            document.getElementById('totalLocations').textContent = filteredClients.length;
+
+            clientsList.innerHTML = filteredClients.map((cliente, index) => `
+                <div class="client-item" onclick="focusOnClient(${clientesData.indexOf(cliente)})">
+                    <div class="client-name">
+                        <i class="fas fa-store"></i> ${cliente.nome}
+                    </div>
+                    <div class="client-address">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>${cliente.endereco}</span>
+                    </div>
+                    ${cliente.telefone ? `<div class="client-contact"><i class="fas fa-phone"></i> ${cliente.telefone}</div>` : ''}
+                </div>
+            `).join('');
+        }
+
+        // Focar em cliente específico
+        window.focusOnClient = function(index) {
+            const { marker, cliente } = markers[index];
+            
+            // Remover active de todos os itens
+            document.querySelectorAll('.client-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            // Adicionar active ao item clicado
+            document.querySelectorAll('.client-item')[index].classList.add('active');
+            
+            // Centralizar mapa e abrir popup
+            map.setView([cliente.lat, cliente.lng], 16);
+            marker.openPopup();
+            
+            // Highlight do marcador
+            if (activeMarker) {
+                activeMarker.setIcon(customIcon);
+            }
+            
+            const highlightIcon = L.divIcon({
+                className: 'custom-marker',
+                html: '<div style="background: #d4951a; width: 40px; height: 40px; border-radius: 50%; border: 4px solid white; box-shadow: 0 4px 12px rgba(212, 149, 26, 0.5); display: flex; align-items: center; justify-content: center; animation: pulse 2s infinite;"><i class="fas fa-coffee" style="color: white; font-size: 16px;"></i></div>',
+                iconSize: [40, 40],
+                iconAnchor: [20, 20]
+            });
+            
+            marker.setIcon(highlightIcon);
+            activeMarker = marker;
+        };
+
+        // Busca de clientes
+        document.getElementById('searchClients').addEventListener('input', (e) => {
+            renderClientsList(e.target.value);
+        });
+
+        // Inicializar lista
+        renderClientsList();
+
+        // Animação de pulse para marcador ativo
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes pulse {
+                0%, 100% { transform: scale(1); }
+                50% { transform: scale(1.1); }
+            }
+        `;
+        document.head.appendChild(style);
+
+        console.log('🗺️ Mapa carregado com sucesso!');
+        console.log(`📍 ${clientesData.length} localizações adicionadas`);
+    </script>
+</body>
+</html>
