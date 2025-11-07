@@ -73,13 +73,32 @@ class MobileNav {
     }
 
     toggleMenu() {
-        this.navMenu?.classList.toggle('nav__menu--open');
+        this.navMenu?.classList.toggle('show');
         this.navToggle?.classList.toggle('nav__toggle--open');
+        
+        // Trocar ícone
+        const icon = this.navToggle?.querySelector('i');
+        if (icon) {
+            if (this.navMenu?.classList.contains('show')) {
+                icon.classList.remove('fa-bars');
+                icon.classList.add('fa-times');
+            } else {
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+            }
+        }
     }
 
     closeMenu() {
-        this.navMenu?.classList.remove('nav__menu--open');
+        this.navMenu?.classList.remove('show');
         this.navToggle?.classList.remove('nav__toggle--open');
+        
+        // Restaurar ícone
+        const icon = this.navToggle?.querySelector('i');
+        if (icon) {
+            icon.classList.remove('fa-times');
+            icon.classList.add('fa-bars');
+        }
     }
 }
 

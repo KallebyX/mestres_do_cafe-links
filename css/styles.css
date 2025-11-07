@@ -531,20 +531,49 @@ ul {
     left: -100%;
     width: 100%;
     height: calc(100vh - 80px);
-    background-color: var(--color-light);
+    background-color: var(--color-bg-primary);
     flex-direction: column;
-    justify-content: center;
-    gap: var(--spacing-xl);
-    transition: var(--transition-normal);
+    justify-content: flex-start;
+    padding: var(--spacing-xl);
+    gap: var(--spacing-md);
+    transition: left 0.3s ease-in-out;
     box-shadow: var(--shadow-lg);
+    z-index: 999;
+    overflow-y: auto;
+  }
+
+  [data-theme="dark"] .nav__menu {
+    background-color: var(--color-bg-primary);
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
   }
   
   .nav__menu.show {
     left: 0;
   }
+
+  .nav__link {
+    padding: var(--spacing-md);
+    width: 100%;
+    border-radius: var(--border-radius-lg);
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+  }
+
+  .nav__link:hover {
+    background: rgba(181, 129, 80, 0.1);
+    transform: translateX(5px);
+  }
   
   .nav__toggle {
     display: block;
+  }
+
+  .nav__toggle i {
+    transition: transform 0.3s ease;
+  }
+
+  .nav__toggle--open i {
+    transform: rotate(90deg);
   }
   
   .hero__container {
