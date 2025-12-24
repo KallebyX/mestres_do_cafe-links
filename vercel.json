@@ -5,6 +5,11 @@
   "installCommand": "echo 'No dependencies to install'",
   "redirects": [
     {
+      "source": "/favicon.ico",
+      "destination": "/assets/images/logo-mestres-cafe.png",
+      "permanent": true
+    },
+    {
       "source": "/home",
       "destination": "/",
       "permanent": true
